@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación de Usabilidad - Secretaría de Salud</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #f4f7fe;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --primary: #4318ff;
+            --success: #05cd99;
+            --card-shadow: 0 10px 40px 0 rgba(31, 38, 135, 0.08);
+            --border-light: rgba(255, 255, 255, 0.8);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            min-height: 100vh;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(67, 24, 255, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(5, 205, 153, 0.1) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        .glass-container {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-light);
+            backdrop-filter: blur(12px);
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+
+        .role-btn {
+            border: 2px solid transparent;
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+        }
+
+        .role-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(67, 24, 255, 0.15);
+        }
+
+        .role-btn.selected {
+            border-color: var(--primary);
+            background: rgba(67, 24, 255, 0.05);
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .likert-scale {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .likert-scale::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 5%;
+            right: 5%;
+            height: 2px;
+            background: #e2e8f0;
+            z-index: 1;
+        }
+
+        .likert-option {
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            width: 60px;
+            cursor: pointer;
+        }
+
+        .likert-option input[type="radio"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .likert-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--primary) 0%, #7551ff 100%);
+            color: white;
+            font-weight: 700;
+            padding: 15px 30px;
+            border-radius: 50px;
+            border: none;
+            transition: all 0.3s;
+            width: 100%;
+            font-size: 1.1rem;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(67, 24, 255, 0.3);
+        }
+
+        #survey-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container max-w-3xl">
+        <div class="glass-container mx-auto" style="max-width: 800px;">
+
+            <div class="text-center mb-5">
+                <img src="https://placehold.co/300x80/transparent/4318ff.png?text=EVALUACION+MVP" alt="Logo"
+                    class="mb-4">
+                <h2 class="fw-bold text-primary">Evaluación de Usabilidad (SUS)</h2>
+                <p class="text-muted">Tu opinión es fundamental para validar y mejorar el Ecosistema Educativo de la
+                    Secretaría de Salud de Cali.</p>
+            </div>
+
+            <!-- SELECCIÓN DE PERFIL -->
+            <div id="profile-section">
+                <h5 class="mb-4 text-center fw-bold">1. Selecciona el módulo que acabas de probar:</h5>
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                        <div class="role-btn text-center" onclick="seleccionarPerfil('gestor')">
+                            <i class="bi bi-bar-chart-fill text-primary" style="font-size: 3rem;"></i>
+                            <h5 class="fw-bold mt-3">Dashboard Analítico</h5>
+                            <p class="text-muted small mb-0">Evaluación para Gestores, Directivos y Curadores.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="role-btn text-center" onclick="seleccionarPerfil('estudiante')">
+                            <i class="bi bi-robot text-success" style="font-size: 3rem;"></i>
+                            <h5 class="fw-bold mt-3">Tutor IA (Simulador)</h5>
+                            <p class="text-muted small mb-0">Evaluación para Estudiantes y Participantes del curso.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CUESTIONARIO SUS -->
+            <div id="survey-section">
+                <hr class="my-5" style="border-color: #cbd5e1;">
+                <h5 class="fw-bold mb-3">2. Cuestionario System Usability Scale (SUS)</h5>
+                <p class="text-muted small mb-4">Por favor, califica las siguientes afirmaciones basándote en tu
+                    experiencia con <strong id="nombre-sistema" class="text-primary">el sistema</strong>. La escala va
+                    desde 1 (Totalmente en desacuerdo) hasta 5 (Totalmente de acuerdo).</p>
+
+                <form id="susForm" onsubmit="enviarEncuesta(event)">
+                    <input type="hidden" id="perfil_evaluado" name="perfil">
+
+                    <!-- Contenedor dinámico de preguntas -->
+                    <div id="preguntas-container"></div>
+
+                    <div class="question-card mt-4">
+                        <h6 class="fw-bold mb-3">Pregunta Cualitativa (Opcional)</h6>
+                        <label for="comentarios" class="form-label text-muted small">¿Qué fue lo que más te gustó del
+                            sistema y qué crees que deberíamos mejorar para la siguiente versión?</label>
+                        <textarea class="form-control" id="comentarios" name="comentarios" rows="3"
+                            style="border-radius: 12px;"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit mt-4" id="btn-enviar">
+                        <i class="bi bi-send-fill me-2"></i> Enviar Evaluación
+                    </button>
+                </form>
+            </div>
+
+            <!-- MENSAJE DE ÉXITO -->
+            <div id="success-section" style="display: none; text-align: center; padding: 40px 0;">
+                <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+                <h3 class="fw-bold mt-4">¡Evaluación Enviada!</h3>
+                <p class="text-muted">Muchísimas gracias por tu tiempo y por contribuir a esta investigación. Tu
+                    respuesta ha sido registrada exitosamente.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const preguntasSUS = [
+            "Creo que me gustará usar este sistema con frecuencia.",
+            "Encontré el sistema innecesariamente complejo.",
+            "Me pareció que el sistema era fácil de usar.",
+            "Creo que necesitaría el apoyo de una persona técnica para poder usar este sistema.",
+            "Encontré que las diversas funciones de este sistema estaban bien integradas.",
+            "Pensé que había demasiada inconsistencia en este sistema.",
+            "Imagino que la mayoría de las personas aprenderían a usar este sistema muy rápidamente.",
+            "Encontré que el sistema era muy engorroso (difícil) de usar.",
+            "Me sentí muy confiado usando el sistema.",
+            "Necesitaba aprender muchas cosas antes de poder empezar a usar el sistema."
+        ];
+
+        let perfilActual = '';
+
+        function seleccionarPerfil(perfil) {
+            perfilActual = perfil;
+            document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+
+            document.getElementById('perfil_evaluado').value = perfil;
+            const nombreSistema = perfil === 'gestor' ? 'el Dashboard Analítico' : 'el Tutor IA (Simulador)';
+            document.getElementById('nombre-sistema').innerText = nombreSistema;
+
+            generarPreguntas(nombreSistema);
+            document.getElementById('survey-section').style.display = 'block';
+
+            // Hacer scroll suave hacia el formulario
+            setTimeout(() => {
+                document.getElementById('survey-section').scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+
+        function generarPreguntas(nombreSistema) {
+            const container = document.getElementById('preguntas-container');
+            container.innerHTML = '';
+
+            preguntasSUS.forEach((preguntaObj, index) => {
+                const num = index + 1;
+                const textoPregunta = preguntaObj.replace("este sistema", `<strong>${nombreSistema}</strong>`);
+
+                let html = `
+                <div class="question-card">
+                    <p class="fw-bold mb-3">${num}. ${textoPregunta}</p>
+                    <div class="likert-scale">
+                        <div class="likert-option">
+                            <input type="radio" name="q${num}" value="1" required>
+                            <span class="likert-label">Totalmente en desacuerdo</span>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" name="q${num}" value="2">
+                            <span class="likert-label">En desacuerdo</span>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" name="q${num}" value="3">
+                            <span class="likert-label">Neutral</span>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" name="q${num}" value="4">
+                            <span class="likert-label">De acuerdo</span>
+                        </div>
+                        <div class="likert-option">
+                            <input type="radio" name="q${num}" value="5">
+                            <span class="likert-label">Totalmente de acuerdo</span>
+                        </div>
+                    </div>
+                </div>`;
+                container.innerHTML += html;
+            });
+        }
+
+        function enviarEncuesta(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-enviar');
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Guardando de forma segura...';
+            btn.disabled = true;
+
+            // Empaquetar los datos en URLSearchParams para asegurar compatibilidad total
+            const formData = new FormData(e.target);
+            const dataParams = new URLSearchParams(formData);
+
+            const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwP9pw4qRSSS0GerUghj0-vtCx2TVqRW8hehMSAzDddEC8c9YNgm-wfAYFrv8Eo57Z5/exec";
+
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                body: dataParams,
+                mode: 'no-cors', // Evita bloqueos CORS del navegador
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+                .then(() => {
+                    document.getElementById('profile-section').style.display = 'none';
+                    document.getElementById('survey-section').style.display = 'none';
+                    document.getElementById('success-section').style.display = 'block';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                })
+                .catch(err => {
+                    console.error("Error al enviar:", err);
+                    btn.innerHTML = 'Error de conexión. Reintentar';
+                    btn.disabled = false;
+                });
+        }
+    </script>
+</body>
+
+</html>
