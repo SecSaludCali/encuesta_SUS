@@ -353,8 +353,8 @@
                         </div>
                         <div class="col-md-7">
                             <div class="dash-card h-100">
-                                <h6 class="fw-bold mb-2 text-secondary text-center">Usabilidad por Atributo (0-100%)</h6>
-                                <p class="text-center small text-muted mb-3">Identifica cuáles aspectos del sistema tuvieron mayor nivel de aceptación y cuáles requieren mejoras en usabilidad.</p>
+                                <h6 class="fw-bold mb-2 text-secondary text-center">Usabilidad por Atributo y Módulo (0-100%)</h6>
+                                <p class="text-center small text-muted mb-3">Compara en qué aspectos de la usabilidad un módulo superó al otro, o qué fricciones comparten.</p>
                                 <div style="height: 280px; width: 100%;">
                                     <canvas id="preguntasChart"></canvas>
                                 </div>
@@ -383,9 +383,9 @@
 
         // Títulos cortos para la gráfica de barras de atributos
         const etiquetasPreguntas = [
-            "Frecuencia de Uso", "Complejidad (-)", "Facilidad de Uso", "Necesidad de Soporte Técnico (-)",
-            "Integración de Funciones", "Inconsistencias (-)", "Curva de Aprendizaje Rápida", 
-            "Engorroso/Difícil (-)", "Nivel de Confianza", "Conocimiento Previo Requerido (-)"
+            "Frecuencia de Uso", "Baja Complejidad (+)", "Facilidad de Uso", "Independencia Técnica (+)",
+            "Integración de Funciones", "Consistencia (+)", "Curva de Aprendizaje Rápida", 
+            "Manejo Intuitivo (+)", "Nivel de Confianza", "Bajo Conocimiento Previo (+)"
         ];
 
         let perfilActual = '';
@@ -550,14 +550,16 @@
                 document.getElementById('badge-estudiante').innerText = badgeEstud.text;
 
                 // ==========================================================
-                // LÓGICA DE PROCESAMIENTO POR PREGUNTA (USABILIDAD 0-100%)
+                // LÓGICA DE PROCESAMIENTO POR PREGUNTA Y POR MÓDULO
                 // ==========================================================
-                // Para el SUS, un 1 a veces es bueno y otras malo. Lo convertiremos todo a "Nivel de Usabilidad Positiva"
-                let puntajesPreguntas = new Array(10).fill(0);
-                let todasLasFilas = filasGestor.concat(filasEstudiante);
+                
+                function calcularUsabilidadPorModulo(filas) {
+                    let puntajes = new Array(10).fill(0);
+                    let total = filas.length;
+                    
+                    if(total === 0) return puntajes;
 
-                if(totalEncuestas > 0) {
-                    todasLasFilas.forEach(row => {
+                    filas.forEach(row => {
                         for(let i = 0; i < 10; i++) {
                             // Las preguntas Q1 a Q10 están en las columnas índice 1 a 10
                             let valObj = row.c[i + 1];
@@ -573,21 +575,24 @@
                                 else {
                                     aporteUsabilidad = ((5 - valor) / 4) * 100;
                                 }
-                                puntajesPreguntas[i] += aporteUsabilidad;
+                                puntajes[i] += aporteUsabilidad;
                             }
                         }
                     });
                     
                     // Promediar
-                    puntajesPreguntas = puntajesPreguntas.map(sum => (sum / totalEncuestas).toFixed(1));
+                    return puntajes.map(sum => (sum / total).toFixed(1));
                 }
+
+                let puntajesGestor = calcularUsabilidadPorModulo(filasGestor);
+                let puntajesEstud = calcularUsabilidadPorModulo(filasEstudiante);
 
                 // Ocultar Loader y Mostrar Contenido
                 document.getElementById('loading-dash').style.display = 'none';
                 document.getElementById('dash-content-wrapper').style.display = 'block';
 
                 // Dibujar Gráficas
-                renderizarGraficosReales(promGestor, promEstud, puntajesPreguntas);
+                renderizarGraficosReales(promGestor, promEstud, puntajesGestor, puntajesEstud);
 
             } catch (error) {
                 console.error("Error cargando los datos del dashboard", error);
@@ -595,7 +600,7 @@
             }
         }
 
-        function renderizarGraficosReales(promGestor, promEstud, puntajesPreguntas) {
+        function renderizarGraficosReales(promGestor, promEstud, puntajesGestor, puntajesEstud) {
             // Destruir gráficos anteriores si el usuario presionó "Refrescar"
             if(chartComparativo) chartComparativo.destroy();
             if(chartPreguntas) chartPreguntas.destroy();
@@ -626,30 +631,40 @@
                 }
             });
 
-            // Gráfico 2: Desempeño por Atributo de Usabilidad
+            // Gráfico 2: Desempeño por Atributo de Usabilidad (Separado por Perfil)
             const ctxPreguntas = document.getElementById('preguntasChart').getContext('2d');
             chartPreguntas = new Chart(ctxPreguntas, {
                 type: 'bar',
                 data: {
                     labels: etiquetasPreguntas,
-                    datasets: [{
-                        label: 'Nivel de Usabilidad',
-                        data: puntajesPreguntas,
-                        backgroundColor: 'rgba(67, 24, 255, 0.2)',
-                        borderColor: 'rgba(67, 24, 255, 0.8)',
-                        borderWidth: 1,
-                        borderRadius: 4
-                    }]
+                    datasets: [
+                        {
+                            label: 'Dashboard (Gestores)',
+                            data: puntajesGestor,
+                            backgroundColor: 'rgba(67, 24, 255, 0.75)',
+                            borderRadius: 4
+                        },
+                        {
+                            label: 'Tutor IA (Estudiantes)',
+                            data: puntajesEstud,
+                            backgroundColor: 'rgba(5, 205, 153, 0.75)',
+                            borderRadius: 4
+                        }
+                    ]
                 },
                 options: {
-                    indexAxis: 'y', // Lo hacemos horizontal para que se lean bien los textos
+                    indexAxis: 'y', // Horizontal
                     responsive: true, maintainAspectRatio: false,
                     plugins: { 
-                        legend: { display: false },
-                        tooltip: { callbacks: { label: (ctx) => `Usabilidad: ${ctx.raw}%` } }
+                        legend: { 
+                            display: true, 
+                            position: 'bottom',
+                            labels: { font: {family: 'Inter', size: 11}, usePointStyle: true, boxWidth: 8 }
+                        },
+                        tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw}% de éxito` } }
                     },
                     scales: {
-                        x: { beginAtZero: true, max: 100, title: { display: true, text: 'Porcentaje Positivo (%)', font: {family: 'Inter', size: 12} } },
+                        x: { beginAtZero: true, max: 100, title: { display: true, text: 'Nivel de Usabilidad Positiva (%)', font: {family: 'Inter', size: 11} } },
                         y: { grid: { display: false }, ticks: { font: {family: 'Inter', size: 11} } }
                     }
                 }
