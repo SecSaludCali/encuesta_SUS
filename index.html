@@ -1,33 +1,31 @@
 <!DOCTYPE html>
 <html lang="es" data-theme="light">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Evaluación de Usabilidad - Secretaría de Salud</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg-color: #f4f7fe;
-            --card-bg: rgba(255, 255, 255, 0.85);
-            --text-main: #1e293b;
+            --bg-color: #f4f7fe; 
+            --card-bg: rgba(255, 255, 255, 0.85); 
+            --text-main: #1e293b; 
             --text-muted: #64748b;
-            --primary: #4318ff;
+            --primary: #4318ff; 
             --success: #05cd99;
             --card-shadow: 0 10px 40px 0 rgba(31, 38, 135, 0.08);
             --border-light: rgba(255, 255, 255, 0.8);
         }
 
-        body {
-            background-color: var(--bg-color);
-            font-family: 'Inter', sans-serif;
-            color: var(--text-main);
+        body { 
+            background-color: var(--bg-color); 
+            font-family: 'Inter', sans-serif; 
+            color: var(--text-main); 
             min-height: 100vh;
-            background-image:
+            background-image: 
                 radial-gradient(at 0% 0%, rgba(67, 24, 255, 0.1) 0px, transparent 50%),
                 radial-gradient(at 100% 100%, rgba(5, 205, 153, 0.1) 0px, transparent 50%);
             background-attachment: fixed;
@@ -50,7 +48,7 @@
             padding: 20px;
             transition: all 0.3s ease;
             background: white;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             cursor: pointer;
         }
 
@@ -69,8 +67,8 @@
             border-radius: 16px;
             padding: 25px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            border: 1px solid rgba(0,0,0,0.05);
         }
 
         .likert-scale {
@@ -133,36 +131,33 @@
             box-shadow: 0 10px 20px rgba(67, 24, 255, 0.3);
         }
 
+        .btn-submit:disabled {
+            background: #cbd5e1;
+            transform: none;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
         #survey-section {
             display: none;
             animation: fadeIn 0.5s ease;
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
-
 <body>
 
     <div class="container max-w-3xl">
         <div class="glass-container mx-auto" style="max-width: 800px;">
-
+            
             <div class="text-center mb-5">
-                <img src="https://placehold.co/300x80/transparent/4318ff.png?text=EVALUACION+MVP" alt="Logo"
-                    class="mb-4">
+                <img src="https://placehold.co/300x80/transparent/4318ff.png?text=EVALUACION+MVP" alt="Logo" class="mb-4">
                 <h2 class="fw-bold text-primary">Evaluación de Usabilidad (SUS)</h2>
-                <p class="text-muted">Tu opinión es fundamental para validar y mejorar el Ecosistema Educativo de la
-                    Secretaría de Salud de Cali.</p>
+                <p class="text-muted">Tu opinión es fundamental para validar y mejorar el Ecosistema Educativo de la Secretaría de Salud de Cali.</p>
             </div>
 
             <!-- SELECCIÓN DE PERFIL -->
@@ -186,15 +181,18 @@
                 </div>
             </div>
 
+            <!-- IFRAME OCULTO (EL TRUCO PARA EVITAR EL FETCH Y LOS ERRORES CORS/401) -->
+            <script>var formEnviado = false;</script>
+            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(formEnviado) { mostrarPantallaExito(); }"></iframe>
+
             <!-- CUESTIONARIO SUS -->
             <div id="survey-section">
                 <hr class="my-5" style="border-color: #cbd5e1;">
                 <h5 class="fw-bold mb-3">2. Cuestionario System Usability Scale (SUS)</h5>
-                <p class="text-muted small mb-4">Por favor, califica las siguientes afirmaciones basándote en tu
-                    experiencia con <strong id="nombre-sistema" class="text-primary">el sistema</strong>. La escala va
-                    desde 1 (Totalmente en desacuerdo) hasta 5 (Totalmente de acuerdo).</p>
+                <p class="text-muted small mb-4">Por favor, califica las siguientes afirmaciones basándote en tu experiencia con <strong id="nombre-sistema" class="text-primary">el sistema</strong>. La escala va desde 1 (Totalmente en desacuerdo) hasta 5 (Totalmente de acuerdo).</p>
 
-                <form id="susForm" onsubmit="enviarEncuesta(event)">
+                <!-- FORMULARIO NATIVO APUNTANDO AL IFRAME -->
+                <form id="susForm" action="https://script.google.com/macros/s/AKfycbwP9pw4qRSSS0GerUghj0-vtCx2TVqRW8hehMSAzDddEC8c9YNgm-wfAYFrv8Eo57Z5/exec" method="POST" target="hidden_iframe" onsubmit="formEnviado=true; procesandoEnvio();">
                     <input type="hidden" id="perfil_evaluado" name="perfil">
 
                     <!-- Contenedor dinámico de preguntas -->
@@ -202,10 +200,8 @@
 
                     <div class="question-card mt-4">
                         <h6 class="fw-bold mb-3">Pregunta Cualitativa (Opcional)</h6>
-                        <label for="comentarios" class="form-label text-muted small">¿Qué fue lo que más te gustó del
-                            sistema y qué crees que deberíamos mejorar para la siguiente versión?</label>
-                        <textarea class="form-control" id="comentarios" name="comentarios" rows="3"
-                            style="border-radius: 12px;"></textarea>
+                        <label for="comentarios" class="form-label text-muted small">¿Qué fue lo que más te gustó del sistema y qué crees que deberíamos mejorar para la siguiente versión?</label>
+                        <textarea class="form-control" id="comentarios" name="comentarios" rows="3" style="border-radius: 12px;"></textarea>
                     </div>
 
                     <button type="submit" class="btn-submit mt-4" id="btn-enviar">
@@ -218,8 +214,7 @@
             <div id="success-section" style="display: none; text-align: center; padding: 40px 0;">
                 <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
                 <h3 class="fw-bold mt-4">¡Evaluación Enviada!</h3>
-                <p class="text-muted">Muchísimas gracias por tu tiempo y por contribuir a esta investigación. Tu
-                    respuesta ha sido registrada exitosamente.</p>
+                <p class="text-muted">Muchísimas gracias por tu tiempo y por contribuir a esta investigación. Tu respuesta ha sido registrada exitosamente.</p>
             </div>
 
         </div>
@@ -252,8 +247,7 @@
 
             generarPreguntas(nombreSistema);
             document.getElementById('survey-section').style.display = 'block';
-
-            // Hacer scroll suave hacia el formulario
+            
             setTimeout(() => {
                 document.getElementById('survey-section').scrollIntoView({ behavior: 'smooth' });
             }, 100);
@@ -297,39 +291,18 @@
             });
         }
 
-        function enviarEncuesta(e) {
-            e.preventDefault();
+        function procesandoEnvio() {
             const btn = document.getElementById('btn-enviar');
             btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Guardando de forma segura...';
             btn.disabled = true;
+        }
 
-            // Empaquetar los datos en URLSearchParams para asegurar compatibilidad total
-            const formData = new FormData(e.target);
-            const dataParams = new URLSearchParams(formData);
-
-            const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwP9pw4qRSSS0GerUghj0-vtCx2TVqRW8hehMSAzDddEC8c9YNgm-wfAYFrv8Eo57Z5/exec";
-
-            fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST',
-                body: dataParams,
-                mode: 'no-cors', // Evita bloqueos CORS del navegador
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            })
-                .then(() => {
-                    document.getElementById('profile-section').style.display = 'none';
-                    document.getElementById('survey-section').style.display = 'none';
-                    document.getElementById('success-section').style.display = 'block';
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                })
-                .catch(err => {
-                    console.error("Error al enviar:", err);
-                    btn.innerHTML = 'Error de conexión. Reintentar';
-                    btn.disabled = false;
-                });
+        function mostrarPantallaExito() {
+            document.getElementById('profile-section').style.display = 'none';
+            document.getElementById('survey-section').style.display = 'none';
+            document.getElementById('success-section').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 </body>
-
 </html>
