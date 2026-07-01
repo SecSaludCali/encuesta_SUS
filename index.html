@@ -97,7 +97,7 @@
 
         .likert-line {
             position: absolute;
-            bottom: 35px;
+            bottom: 35px; /* Altura de la línea en desktop */
             left: 10%;
             right: 10%;
             height: 4px;
@@ -134,6 +134,7 @@
             margin-bottom: 16px;
             padding: 0 5px;
             transition: color 0.2s;
+            word-wrap: break-word;
         }
 
         .hidden-radio {
@@ -208,6 +209,19 @@
             justify-content: center;
         }
 
+        .eval-totales-card {
+            padding: 18px 30px; 
+            border-left: 6px solid #1e293b; 
+            flex-direction: row; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: linear-gradient(to right, #ffffff, #f8fafc);
+        }
+
+        .dash-modulo-card {
+            padding: 30px 25px;
+        }
+
         .btn-sutil {
             background: rgba(100, 116, 139, 0.1);
             color: var(--text-muted);
@@ -222,15 +236,82 @@
             background: rgba(67, 24, 255, 0.1);
             color: var(--primary);
         }
+
+        /* ========================================== */
+        /* ESTILOS ADAPTATIVOS (RESPONSIVE PARA MÓVILES) */
+        /* ========================================== */
+        @media (max-width: 768px) {
+            .glass-container {
+                padding: 25px 15px;
+                margin-top: 20px;
+                margin-bottom: 20px;
+                border-radius: 20px;
+            }
+            .question-card {
+                padding: 20px 15px;
+            }
+            /* Ajustes en la escala Likert para evitar que se desborde */
+            .likert-block {
+                padding: 20px 5px;
+            }
+            .likert-label {
+                font-size: 0.6rem;
+                height: auto;
+                min-height: 40px;
+                margin-bottom: 12px;
+                padding: 0 2px;
+            }
+            .custom-radio {
+                width: 20px;
+                height: 20px;
+                box-shadow: 0 0 0 4px #f8fafc;
+            }
+            .custom-radio::after {
+                width: 10px;
+                height: 10px;
+            }
+            .likert-line {
+                bottom: 30px; /* Recalculado para centrarse con el radio de 20px */
+            }
+            /* Ajustes en los títulos y botones */
+            #main-header h2 {
+                font-size: 1.5rem;
+            }
+            .role-btn i {
+                font-size: 2.5rem !important;
+            }
+            .btn-submit {
+                font-size: 1rem;
+                padding: 12px 20px;
+            }
+            /* Ajustes del Dashboard en móvil */
+            .eval-totales-card {
+                flex-direction: column !important;
+                text-align: center;
+                gap: 15px;
+                padding: 20px;
+                border-left: none;
+                border-top: 6px solid #1e293b;
+            }
+            .dash-card h1, .metric-gigante {
+                font-size: 2.5rem !important;
+            }
+            .dash-modulo-card {
+                padding: 20px 15px;
+            }
+            .dash-modulo-card .progress {
+                margin-bottom: 20px !important;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <div class="container max-w-3xl">
+    <div class="container max-w-3xl px-3 px-md-auto">
         <div class="glass-container mx-auto" style="max-width: 950px;">
             
             <div class="text-center mb-5" id="main-header">
-                <img src="https://placehold.co/300x80/transparent/4318ff.png?text=EVALUACION+MVP" alt="Logo" class="mb-4">
+                <img src="https://placehold.co/300x80/transparent/4318ff.png?text=EVALUACION+MVP" alt="Logo" class="mb-4 img-fluid" style="max-height: 80px;">
                 <h2 class="fw-bold text-primary">Evaluación de Usabilidad (SUS)</h2>
                 <p class="text-muted mb-3">Tu opinión es fundamental para validar y mejorar el Ecosistema Educativo de la Secretaría de Salud de Cali.</p>
                 
@@ -243,16 +324,16 @@
             <!-- 1. SELECCIÓN DE PERFIL -->
             <div id="profile-section">
                 <h5 class="mb-4 text-center fw-bold">1. Selecciona el módulo que acabas de probar:</h5>
-                <div class="row g-4 mb-4">
-                    <div class="col-md-6">
-                        <div class="role-btn text-center" onclick="seleccionarPerfil('gestor')">
+                <div class="row g-3 g-md-4 mb-4">
+                    <div class="col-12 col-md-6">
+                        <div class="role-btn text-center h-100 d-flex flex-column justify-content-center" onclick="seleccionarPerfil('gestor')">
                             <i class="bi bi-bar-chart-fill text-primary" style="font-size: 3rem;"></i>
                             <h5 class="fw-bold mt-3">Dashboard Analítico</h5>
                             <p class="text-muted small mb-0">Evaluación para Gestores, Directivos y Curadores.</p>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="role-btn text-center" onclick="seleccionarPerfil('estudiante')">
+                    <div class="col-12 col-md-6">
+                        <div class="role-btn text-center h-100 d-flex flex-column justify-content-center" onclick="seleccionarPerfil('estudiante')">
                             <i class="bi bi-robot text-success" style="font-size: 3rem;"></i>
                             <h5 class="fw-bold mt-3">Tutor IA (Simulador)</h5>
                             <p class="text-muted small mb-0">Evaluación para Estudiantes y Participantes del curso.</p>
@@ -302,7 +383,7 @@
 
             <!-- 4. TABLERO DE CONTROL (RESULTADOS EN VIVO) -->
             <div id="dashboard-section">
-                <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mb-4 gap-3 text-center text-sm-start">
                     <div>
                         <h3 class="fw-bold text-primary mb-0"><i class="bi bi-clipboard-data-fill me-2"></i> Monitoreo de Usabilidad</h3>
                         <p class="text-muted small mb-0 mt-1">Conectado en tiempo real a la base de datos de investigación.</p>
@@ -345,20 +426,20 @@
                         </div>
                     </div>
 
-                    <!-- EVALUACIONES TOTALES (Formato Horizontal) -->
-                    <div class="dash-card mb-4" style="padding: 18px 30px; border-left: 6px solid #1e293b; flex-direction: row; justify-content: space-between; align-items: center; background: linear-gradient(to right, #ffffff, #f8fafc);">
+                    <!-- EVALUACIONES TOTALES (Formato Horizontal Adaptativo) -->
+                    <div class="dash-card eval-totales-card mb-4">
                         <div>
                             <h6 class="text-muted fw-bold mb-0 text-uppercase" style="letter-spacing: 1px;">Evaluaciones Totales</h6>
                             <p class="small text-muted mb-0 mt-1">Muestra combinada de ambos módulos</p>
                         </div>
-                        <h1 class="fw-bold text-dark mb-0" id="dash-total" style="font-size: 3.5rem; line-height: 1;">0</h1>
+                        <h1 class="fw-bold text-dark mb-0 metric-gigante" id="dash-total" style="font-size: 3.5rem; line-height: 1;">0</h1>
                     </div>
 
                     <!-- METAS Y RESULTADOS POR MÓDULO -->
                     <div class="row g-4 mb-4">
                         <!-- MÓDULO GESTORES -->
                         <div class="col-md-6">
-                            <div class="dash-card h-100" style="border-top: 4px solid var(--primary); padding: 30px 25px;">
+                            <div class="dash-card dash-modulo-card h-100" style="border-top: 4px solid var(--primary);">
                                 <!-- Progreso -->
                                 <div class="d-flex justify-content-between align-items-end mb-2">
                                     <h6 class="text-muted fw-bold mb-0"><i class="bi bi-bar-chart-fill text-primary me-2"></i>Meta Gestores</h6>
@@ -371,7 +452,7 @@
                                 <!-- Puntaje SUS Gestores -->
                                 <div class="text-center pt-4" style="border-top: 1px dashed #cbd5e1;">
                                     <h6 class="text-muted fw-bold text-uppercase mb-3" style="font-size: 0.8rem; letter-spacing: 1px;">Puntaje SUS (Dashboard)</h6>
-                                    <h1 class="fw-bold text-primary mb-0" id="dash-sus-gestor" style="font-size: 3.5rem;">0.0</h1>
+                                    <h1 class="fw-bold text-primary mb-0 metric-gigante" id="dash-sus-gestor" style="font-size: 3.5rem;">0.0</h1>
                                     <span class="badge bg-secondary bg-opacity-10 text-secondary mt-3 mx-auto px-4 py-2 fs-6" id="badge-gestor" style="border-radius: 30px;">Sin Datos</span>
                                 </div>
                             </div>
@@ -379,7 +460,7 @@
 
                         <!-- MÓDULO ESTUDIANTES -->
                         <div class="col-md-6">
-                            <div class="dash-card h-100" style="border-top: 4px solid var(--success); padding: 30px 25px;">
+                            <div class="dash-card dash-modulo-card h-100" style="border-top: 4px solid var(--success);">
                                 <!-- Progreso -->
                                 <div class="d-flex justify-content-between align-items-end mb-2">
                                     <h6 class="text-muted fw-bold mb-0"><i class="bi bi-robot text-success me-2"></i>Meta Estudiantes</h6>
@@ -392,7 +473,7 @@
                                 <!-- Puntaje SUS Estudiantes -->
                                 <div class="text-center pt-4" style="border-top: 1px dashed #cbd5e1;">
                                     <h6 class="text-muted fw-bold text-uppercase mb-3" style="font-size: 0.8rem; letter-spacing: 1px;">Puntaje SUS (Tutor IA)</h6>
-                                    <h1 class="fw-bold text-success mb-0" id="dash-sus-est" style="font-size: 3.5rem;">0.0</h1>
+                                    <h1 class="fw-bold text-success mb-0 metric-gigante" id="dash-sus-est" style="font-size: 3.5rem;">0.0</h1>
                                     <span class="badge bg-secondary bg-opacity-10 text-secondary mt-3 mx-auto px-4 py-2 fs-6" id="badge-estudiante" style="border-radius: 30px;">Sin Datos</span>
                                 </div>
                             </div>
@@ -400,7 +481,7 @@
                     </div>
 
                     <div class="row g-4 mb-4">
-                        <div class="col-md-5">
+                        <div class="col-lg-5 col-12">
                             <div class="dash-card h-100">
                                 <h6 class="fw-bold mb-3 text-secondary text-center">Comparativo SUS Global</h6>
                                 <div style="height: 300px; width: 100%;">
@@ -408,7 +489,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-lg-7 col-12">
                             <div class="dash-card h-100">
                                 <h6 class="fw-bold mb-2 text-secondary text-center">Usabilidad por Atributo y Módulo (0-100%)</h6>
                                 <p class="text-center small text-muted mb-3">Compara en qué aspectos de la usabilidad un módulo superó al otro, o qué fricciones comparten.</p>
