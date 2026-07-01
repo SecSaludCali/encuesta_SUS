@@ -137,9 +137,13 @@
             transition: color 0.2s;
         }
 
-        /* Ocultamos el radio nativo feo del navegador */
+        /* Ocultamos el radio nativo feo del navegador, pero lo mantenemos focusable para validación (required) */
         .hidden-radio {
-            display: none;
+            position: absolute;
+            opacity: 0;
+            width: 1px;
+            height: 1px;
+            pointer-events: none;
         }
 
         /* Nuestro propio círculo elegante y alineado */
