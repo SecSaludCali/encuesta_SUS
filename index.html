@@ -19,6 +19,7 @@
             --text-muted: #64748b;
             --primary: #4318ff; 
             --success: #05cd99;
+            --danger: #ee5d50;
             --card-shadow: 0 10px 40px 0 rgba(31, 38, 135, 0.08);
             --border-light: rgba(255, 255, 255, 0.8);
         }
@@ -206,6 +207,21 @@
             flex-direction: column;
             justify-content: center;
         }
+
+        .btn-sutil {
+            background: rgba(100, 116, 139, 0.1);
+            color: var(--text-muted);
+            border-radius: 20px;
+            font-weight: 600;
+            padding: 6px 16px;
+            font-size: 0.85rem;
+            border: none;
+            transition: all 0.2s;
+        }
+        .btn-sutil:hover {
+            background: rgba(67, 24, 255, 0.1);
+            color: var(--primary);
+        }
     </style>
 </head>
 <body>
@@ -216,7 +232,12 @@
             <div class="text-center mb-5" id="main-header">
                 <img src="https://placehold.co/300x80/transparent/4318ff.png?text=EVALUACION+MVP" alt="Logo" class="mb-4">
                 <h2 class="fw-bold text-primary">Evaluación de Usabilidad (SUS)</h2>
-                <p class="text-muted">Tu opinión es fundamental para validar y mejorar el Ecosistema Educativo de la Secretaría de Salud de Cali.</p>
+                <p class="text-muted mb-3">Tu opinión es fundamental para validar y mejorar el Ecosistema Educativo de la Secretaría de Salud de Cali.</p>
+                
+                <!-- BOTÓN SUTIL: VER RESULTADOS AL INICIO -->
+                <button class="btn-sutil mt-2" onclick="mostrarDashboard()">
+                    <i class="bi bi-bar-chart-line-fill me-1"></i> Ver avance de resultados
+                </button>
             </div>
 
             <!-- 1. SELECCIÓN DE PERFIL -->
@@ -308,36 +329,56 @@
                         • <strong>80 a 100:</strong> Excelente / Alta satisfacción en la experiencia de usuario.</p>
                     </div>
 
-                    <!-- BARRA DE AVANCE DE ENCUESTA -->
-                    <div class="dash-card mb-4" style="padding: 20px 25px;">
-                        <div class="d-flex justify-content-between align-items-end mb-2">
-                            <h6 class="text-muted fw-bold mb-0">Avance de Recolección (Meta Tesis: 30 Muestras)</h6>
-                            <span class="fw-bold text-primary" style="font-size: 1.1rem;" id="dash-avance-txt">0 / 30 Encuestas</span>
+                    <!-- EVALUACIONES TOTALES (Formato Horizontal) -->
+                    <div class="dash-card mb-4" style="padding: 18px 30px; border-left: 6px solid #1e293b; flex-direction: row; justify-content: space-between; align-items: center; background: linear-gradient(to right, #ffffff, #f8fafc);">
+                        <div>
+                            <h6 class="text-muted fw-bold mb-0 text-uppercase" style="letter-spacing: 1px;">Evaluaciones Totales</h6>
+                            <p class="small text-muted mb-0 mt-1">Muestra combinada de ambos módulos</p>
                         </div>
-                        <div class="progress mt-2" style="height: 20px; border-radius: 10px; background: rgba(67, 24, 255, 0.1);">
-                            <div class="progress-bar progress-bar-striped progress-bar-animated" id="dash-avance-bar" role="progressbar" style="width: 0%; background: linear-gradient(135deg, var(--primary) 0%, #7551ff 100%);">0%</div>
-                        </div>
+                        <h1 class="fw-bold text-dark mb-0" id="dash-total" style="font-size: 3.5rem; line-height: 1;">0</h1>
                     </div>
-                    
-                    <div class="row g-3 mb-4">
-                        <div class="col-md-4">
-                            <div class="dash-card text-center" style="border-bottom: 4px solid #cbd5e1;">
-                                <h6 class="text-muted fw-bold">Evaluaciones Totales</h6>
-                                <h1 class="fw-bold text-dark mb-0" id="dash-total" style="font-size: 3rem;">0</h1>
+
+                    <!-- METAS Y RESULTADOS POR MÓDULO -->
+                    <div class="row g-4 mb-4">
+                        <!-- MÓDULO GESTORES -->
+                        <div class="col-md-6">
+                            <div class="dash-card h-100" style="border-top: 4px solid var(--primary); padding: 30px 25px;">
+                                <!-- Progreso -->
+                                <div class="d-flex justify-content-between align-items-end mb-2">
+                                    <h6 class="text-muted fw-bold mb-0"><i class="bi bi-bar-chart-fill text-primary me-2"></i>Meta Gestores</h6>
+                                    <span class="fw-bold text-primary fs-5" id="dash-avance-gestor-txt">0 / 15</span>
+                                </div>
+                                <div class="progress mb-4" style="height: 12px; border-radius: 6px; background: rgba(67, 24, 255, 0.1);">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated" id="dash-avance-gestor-bar" style="width: 0%; background: var(--primary);"></div>
+                                </div>
+                                
+                                <!-- Puntaje SUS Gestores -->
+                                <div class="text-center pt-4" style="border-top: 1px dashed #cbd5e1;">
+                                    <h6 class="text-muted fw-bold text-uppercase mb-3" style="font-size: 0.8rem; letter-spacing: 1px;">Puntaje SUS (Dashboard)</h6>
+                                    <h1 class="fw-bold text-primary mb-0" id="dash-sus-gestor" style="font-size: 3.5rem;">0.0</h1>
+                                    <span class="badge bg-secondary bg-opacity-10 text-secondary mt-3 mx-auto px-4 py-2 fs-6" id="badge-gestor" style="border-radius: 30px;">Sin Datos</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="dash-card text-center" style="border-bottom: 4px solid var(--primary);">
-                                <h6 class="text-muted fw-bold">SUS Gestores (Dash)</h6>
-                                <h2 class="fw-bold text-primary mb-0" id="dash-sus-gestor">0.0</h2>
-                                <span class="badge mt-2 mx-auto" id="badge-gestor">Sin Datos</span>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="dash-card text-center" style="border-bottom: 4px solid var(--success);">
-                                <h6 class="text-muted fw-bold">SUS Estudiantes (IA)</h6>
-                                <h2 class="fw-bold text-success mb-0" id="dash-sus-est">0.0</h2>
-                                <span class="badge mt-2 mx-auto" id="badge-estudiante">Sin Datos</span>
+
+                        <!-- MÓDULO ESTUDIANTES -->
+                        <div class="col-md-6">
+                            <div class="dash-card h-100" style="border-top: 4px solid var(--success); padding: 30px 25px;">
+                                <!-- Progreso -->
+                                <div class="d-flex justify-content-between align-items-end mb-2">
+                                    <h6 class="text-muted fw-bold mb-0"><i class="bi bi-robot text-success me-2"></i>Meta Estudiantes</h6>
+                                    <span class="fw-bold text-success fs-5" id="dash-avance-estud-txt">0 / 30</span>
+                                </div>
+                                <div class="progress mb-4" style="height: 12px; border-radius: 6px; background: rgba(5, 205, 153, 0.1);">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" id="dash-avance-estud-bar" style="width: 0%;"></div>
+                                </div>
+                                
+                                <!-- Puntaje SUS Estudiantes -->
+                                <div class="text-center pt-4" style="border-top: 1px dashed #cbd5e1;">
+                                    <h6 class="text-muted fw-bold text-uppercase mb-3" style="font-size: 0.8rem; letter-spacing: 1px;">Puntaje SUS (Tutor IA)</h6>
+                                    <h1 class="fw-bold text-success mb-0" id="dash-sus-est" style="font-size: 3.5rem;">0.0</h1>
+                                    <span class="badge bg-secondary bg-opacity-10 text-secondary mt-3 mx-auto px-4 py-2 fs-6" id="badge-estudiante" style="border-radius: 30px;">Sin Datos</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -495,15 +536,20 @@
         }
 
         function obtenerColorBadge(score) {
-            if(score >= 80) return { bg: 'bg-success', text: 'Excelente (A)' };
-            if(score >= 68) return { bg: 'bg-primary', text: 'Aceptable (B)' };
-            if(score > 0) return { bg: 'bg-danger', text: 'Marginal (C/D)' };
-            return { bg: 'bg-secondary', text: 'Sin Datos' };
+            if(score >= 80) return { bg: 'success', text: 'Excelente (A)' };
+            if(score >= 68) return { bg: 'primary', text: 'Aceptable (B)' };
+            if(score > 0) return { bg: 'danger', text: 'Marginal (C/D)' };
+            return { bg: 'secondary', text: 'Sin Datos' };
         }
 
         async function mostrarDashboard() {
+            // Ocultamos todas las demás pantallas
             document.getElementById('main-header').style.display = 'none';
+            document.getElementById('profile-section').style.display = 'none';
+            document.getElementById('survey-section').style.display = 'none';
             document.getElementById('success-section').style.display = 'none';
+            
+            // Mostramos el dashboard
             document.getElementById('dashboard-section').style.display = 'block';
             document.getElementById('loading-dash').style.display = 'block';
             document.getElementById('dash-content-wrapper').style.display = 'none';
@@ -529,24 +575,27 @@
                 filasEstudiante.forEach(r => sumEstud += (r.c[11] && r.c[11].v ? Number(r.c[11].v) : 0));
                 const promEstud = numEstudiantes > 0 ? (sumEstud / numEstudiantes).toFixed(1) : 0;
 
-                // Actualizar Textos
+                // Actualizar Textos Globales
                 document.getElementById('dash-total').innerText = totalEncuestas;
                 document.getElementById('dash-sus-gestor').innerText = promGestor;
                 document.getElementById('dash-sus-est').innerText = promEstud;
                 
-                // Actualizar Meta de Tesis
-                let pctMeta = Math.min(Math.round((totalEncuestas / 30) * 100), 100);
-                document.getElementById('dash-avance-txt').innerText = `${totalEncuestas} / 30 Encuestas`;
-                document.getElementById('dash-avance-bar').style.width = `${pctMeta}%`;
-                document.getElementById('dash-avance-bar').innerText = `${pctMeta}%`;
+                // Actualizar Metas de Recolección Separadas
+                let pctGestor = Math.min(Math.round((numGestores / 15) * 100), 100);
+                document.getElementById('dash-avance-gestor-txt').innerText = `${numGestores} / 15`;
+                document.getElementById('dash-avance-gestor-bar').style.width = `${pctGestor}%`;
 
-                // Actualizar Badges Evaluativos
+                let pctEstud = Math.min(Math.round((numEstudiantes / 30) * 100), 100);
+                document.getElementById('dash-avance-estud-txt').innerText = `${numEstudiantes} / 30`;
+                document.getElementById('dash-avance-estud-bar').style.width = `${pctEstud}%`;
+
+                // Actualizar Textos y Colores Evaluativos (Semáforo SOLO en la medalla inferior)
                 let badgeGestor = obtenerColorBadge(promGestor);
-                document.getElementById('badge-gestor').className = `badge ${badgeGestor.bg} bg-opacity-10 text-${badgeGestor.bg.replace('bg-','')} mt-2 mx-auto`;
+                document.getElementById('badge-gestor').className = `badge bg-${badgeGestor.bg} bg-opacity-10 text-${badgeGestor.bg} mt-3 mx-auto px-4 py-2 fs-6`;
                 document.getElementById('badge-gestor').innerText = badgeGestor.text;
 
                 let badgeEstud = obtenerColorBadge(promEstud);
-                document.getElementById('badge-estudiante').className = `badge ${badgeEstud.bg} bg-opacity-10 text-${badgeEstud.bg.replace('bg-','')} mt-2 mx-auto`;
+                document.getElementById('badge-estudiante').className = `badge bg-${badgeEstud.bg} bg-opacity-10 text-${badgeEstud.bg} mt-3 mx-auto px-4 py-2 fs-6`;
                 document.getElementById('badge-estudiante').innerText = badgeEstud.text;
 
                 // ==========================================================
