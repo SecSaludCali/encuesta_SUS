@@ -320,13 +320,29 @@
 
                 <div id="dash-content-wrapper" style="display: none;">
                     
-                    <!-- GUÍA DE INTERPRETACIÓN -->
+                    <!-- GUÍA DE INTERPRETACIÓN CON FÓRMULA -->
                     <div class="dash-card mb-4" style="background: rgba(67, 24, 255, 0.03); border: 1px dashed var(--primary); padding: 20px;">
-                        <h6 class="fw-bold text-primary mb-2"><i class="bi bi-info-circle-fill me-2"></i>¿Cómo interpretar estos resultados?</h6>
-                        <p class="small text-muted mb-0">La Escala de Usabilidad (SUS) no es un porcentaje escolar ordinario de 0 a 100%. Es una medida algorítmica donde el promedio global de la industria es <strong>68 puntos</strong>.<br>
-                        • <strong>Menos de 68:</strong> Marginal / Existen fricciones críticas de uso.<br>
-                        • <strong>68 a 80:</strong> Aceptable / Bueno.<br>
-                        • <strong>80 a 100:</strong> Excelente / Alta satisfacción en la experiencia de usuario.</p>
+                        <h6 class="fw-bold text-primary mb-3"><i class="bi bi-info-circle-fill me-2"></i>¿Cómo interpretar estos resultados?</h6>
+                        <p class="small text-muted mb-3">La Escala de Usabilidad (SUS) no es un porcentaje escolar ordinario de 0 a 100%. Es una medida algorítmica donde el promedio global de la industria es <strong>68 puntos</strong>.</p>
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="small text-muted mb-0">
+                                    <strong class="d-block mb-2 text-dark">Rangos de Calificación:</strong>
+                                    <div class="mb-1"><i class="bi bi-circle-fill text-danger" style="font-size: 0.5rem; margin-right: 5px;"></i> <strong>Menos de 68:</strong> Marginal / Fricciones de uso.</div>
+                                    <div class="mb-1"><i class="bi bi-circle-fill text-primary" style="font-size: 0.5rem; margin-right: 5px;"></i> <strong>68 a 80:</strong> Aceptable / Bueno.</div>
+                                    <div><i class="bi bi-circle-fill text-success" style="font-size: 0.5rem; margin-right: 5px;"></i> <strong>80 a 100:</strong> Excelente / Alta satisfacción.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="small text-muted mb-0" style="background: rgba(255,255,255,0.7); padding: 12px; border-radius: 8px; border: 1px solid rgba(67,24,255,0.1);">
+                                    <strong class="d-block mb-2 text-dark">Fórmula de Cálculo Algorítmico:</strong>
+                                    <div class="mb-1">• <em>Preguntas Positivas (Impares):</em> Valor - 1</div>
+                                    <div class="mb-2">• <em>Preguntas Negativas (Pares):</em> 5 - Valor</div>
+                                    <div class="fw-bold" style="color: var(--primary);">Puntaje Final: Suma de resultados × 2.5</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- EVALUACIONES TOTALES (Formato Horizontal) -->
