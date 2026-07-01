@@ -79,12 +79,12 @@
         /* ========================================== */
         
         .likert-block {
-            background: #f8fafc; /* Fondo gris/azulado suave para destacar el bloque */
+            background: #f8fafc;
             border-radius: 20px;
-            padding: 25px 15px; /* Espacio interno del bloque */
+            padding: 25px 15px;
             position: relative;
             border: 1px solid #e2e8f0;
-            margin-top: 20px; /* Separación con la pregunta */
+            margin-top: 20px;
         }
 
         .likert-options {
@@ -94,10 +94,9 @@
             z-index: 2;
         }
 
-        /* Línea Horizontal Continua */
         .likert-line {
             position: absolute;
-            bottom: 35px; /* Calculado matemáticamente: 25px padding + 12px mitad del radio - 2px mitad línea */
+            bottom: 35px;
             left: 10%;
             right: 10%;
             height: 4px;
@@ -121,14 +120,13 @@
             transform: translateY(-3px);
         }
 
-        /* Textos Arriba */
         .likert-label {
             font-size: 0.75rem;
             color: var(--text-muted);
             text-align: center;
             font-weight: 600;
             line-height: 1.3;
-            height: 40px; /* Forzamos un alto fijo para que los textos largos no empujen los círculos hacia abajo */
+            height: 40px;
             display: flex;
             align-items: flex-end;
             justify-content: center;
@@ -137,7 +135,6 @@
             transition: color 0.2s;
         }
 
-        /* Ocultamos el radio nativo feo del navegador, pero lo mantenemos focusable para validación (required) */
         .hidden-radio {
             position: absolute;
             opacity: 0;
@@ -146,7 +143,6 @@
             pointer-events: none;
         }
 
-        /* Nuestro propio círculo elegante y alineado */
         .custom-radio {
             width: 24px;
             height: 24px;
@@ -157,7 +153,6 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            /* El shadow crea un halo invisible que recorta la línea gris que pasa por detrás */
             box-shadow: 0 0 0 6px #f8fafc;
             transition: all 0.2s;
         }
@@ -173,27 +168,12 @@
             transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* Lógica Visual de Selección (Cuando se hace clic) */
-        .hidden-radio:checked ~ .custom-radio {
-            border-color: var(--primary);
-        }
-        
-        .hidden-radio:checked ~ .custom-radio::after {
-            transform: scale(1); /* Anima el llenado azul */
-        }
+        .hidden-radio:checked ~ .custom-radio { border-color: var(--primary); }
+        .hidden-radio:checked ~ .custom-radio::after { transform: scale(1); }
+        .hidden-radio:checked ~ .likert-label { color: var(--primary); font-weight: 800; }
 
-        .hidden-radio:checked ~ .likert-label {
-            color: var(--primary);
-            font-weight: 800;
-        }
-
-        /* Efecto al pasar el mouse por toda la columna */
-        .likert-option:hover .custom-radio {
-            border-color: var(--primary);
-        }
-        .likert-option:hover .likert-label {
-            color: var(--primary);
-        }
+        .likert-option:hover .custom-radio { border-color: var(--primary); }
+        .likert-option:hover .likert-label { color: var(--primary); }
 
         /* ========================================== */
 
@@ -209,27 +189,11 @@
             font-size: 1.1rem;
         }
 
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(67, 24, 255, 0.3);
-        }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(67, 24, 255, 0.3); }
+        .btn-submit:disabled { background: #cbd5e1; transform: none; box-shadow: none; cursor: not-allowed; }
 
-        .btn-submit:disabled {
-            background: #cbd5e1;
-            transform: none;
-            box-shadow: none;
-            cursor: not-allowed;
-        }
-
-        #survey-section, #dashboard-section {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        #survey-section, #dashboard-section { display: none; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
         .dash-card {
             background: white;
@@ -247,7 +211,7 @@
 <body>
 
     <div class="container max-w-3xl">
-        <div class="glass-container mx-auto" style="max-width: 850px;">
+        <div class="glass-container mx-auto" style="max-width: 950px;">
             
             <div class="text-center mb-5" id="main-header">
                 <img src="https://placehold.co/300x80/transparent/4318ff.png?text=EVALUACION+MVP" alt="Logo" class="mb-4">
@@ -290,7 +254,6 @@
                 <form id="susForm" action="https://script.google.com/macros/s/AKfycbwP9pw4qRSSS0GerUghj0-vtCx2TVqRW8hehMSAzDddEC8c9YNgm-wfAYFrv8Eo57Z5/exec" method="POST" target="hidden_iframe" onsubmit="formEnviado=true; procesandoEnvio();">
                     <input type="hidden" id="perfil_evaluado" name="perfil">
 
-                    <!-- Contenedor dinámico de preguntas -->
                     <div id="preguntas-container"></div>
 
                     <div class="question-card mt-4">
@@ -311,69 +274,92 @@
                 <h3 class="fw-bold mt-4">¡Evaluación Enviada!</h3>
                 <p class="text-muted mb-4">Muchísimas gracias por tu tiempo y por contribuir a esta investigación. Tu respuesta ha sido registrada exitosamente en nuestra base de datos institucional.</p>
                 
-                <!-- Botón para ver el nuevo tablero -->
                 <button class="btn btn-outline-primary rounded-pill px-4 py-2 mt-2 fw-bold" onclick="mostrarDashboard()">
                     <i class="bi bi-bar-chart-fill me-2"></i> Ver Tablero de Resultados
                 </button>
             </div>
 
-            <!-- 4. TABLERO DE CONTROL (RESULTADOS) -->
+            <!-- 4. TABLERO DE CONTROL (RESULTADOS EN VIVO) -->
             <div id="dashboard-section">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div>
                         <h3 class="fw-bold text-primary mb-0"><i class="bi bi-clipboard-data-fill me-2"></i> Monitoreo de Usabilidad</h3>
-                        <p class="text-muted small mb-0 mt-1">Avance de recolección y resultados globales del MVP.</p>
+                        <p class="text-muted small mb-0 mt-1">Conectado en tiempo real a la base de datos de investigación.</p>
                     </div>
-                    <button class="btn btn-light rounded-circle shadow-sm" onclick="location.reload()" style="width: 45px; height: 45px;" title="Refrescar">
+                    <button class="btn btn-light rounded-circle shadow-sm" onclick="mostrarDashboard()" style="width: 45px; height: 45px;" title="Refrescar Datos">
                         <i class="bi bi-arrow-clockwise"></i>
                     </button>
                 </div>
 
-                <!-- NUEVA: BARRA DE AVANCE DE ENCUESTA -->
-                <div class="dash-card mb-4" style="padding: 20px 25px;">
-                    <div class="d-flex justify-content-between align-items-end mb-2">
-                        <h6 class="text-muted fw-bold mb-0">Avance de Recolección (Muestra Estadística)</h6>
-                        <span class="fw-bold text-primary" style="font-size: 1.1rem;">24 / 30 Encuestas</span>
-                    </div>
-                    <div class="progress mt-2" style="height: 20px; border-radius: 10px; background: rgba(67, 24, 255, 0.1);">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 80%; background: linear-gradient(135deg, var(--primary) 0%, #7551ff 100%);" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">80%</div>
-                    </div>
-                </div>
-                
-                <div class="row g-3 mb-4">
-                    <div class="col-md-4">
-                        <div class="dash-card text-center" style="border-bottom: 4px solid #cbd5e1;">
-                            <h6 class="text-muted fw-bold">Evaluaciones Totales</h6>
-                            <h1 class="fw-bold text-dark mb-0" id="dash-total" style="font-size: 3rem;">24</h1>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="dash-card text-center" style="border-bottom: 4px solid var(--primary);">
-                            <h6 class="text-muted fw-bold">Puntaje Gestores</h6>
-                            <h2 class="fw-bold text-primary mb-0" id="dash-sus-gestor">78.5</h2>
-                            <span class="badge bg-primary bg-opacity-10 text-primary mt-2 mx-auto">Aceptable (B)</span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="dash-card text-center" style="border-bottom: 4px solid var(--success);">
-                            <h6 class="text-muted fw-bold">Puntaje Estudiantes</h6>
-                            <h2 class="fw-bold text-success mb-0" id="dash-sus-est">82.0</h2>
-                            <span class="badge bg-success bg-opacity-10 text-success mt-2 mx-auto">Excelente (A)</span>
-                        </div>
-                    </div>
+                <!-- LOADING INDICATOR -->
+                <div id="loading-dash" class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="mt-3 fw-bold text-muted">Sincronizando métricas con Google Sheets...</p>
                 </div>
 
-                <div class="dash-card mb-4">
-                    <h6 class="fw-bold mb-3 text-secondary text-center">Distribución de Calificaciones (1-100)</h6>
-                    <div style="height: 250px; width: 100%;">
-                        <canvas id="susChart"></canvas>
+                <div id="dash-content-wrapper" style="display: none;">
+                    
+                    <!-- GUÍA DE INTERPRETACIÓN -->
+                    <div class="dash-card mb-4" style="background: rgba(67, 24, 255, 0.03); border: 1px dashed var(--primary); padding: 20px;">
+                        <h6 class="fw-bold text-primary mb-2"><i class="bi bi-info-circle-fill me-2"></i>¿Cómo interpretar estos resultados?</h6>
+                        <p class="small text-muted mb-0">La Escala de Usabilidad (SUS) no es un porcentaje escolar ordinario de 0 a 100%. Es una medida algorítmica donde el promedio global de la industria es <strong>68 puntos</strong>.<br>
+                        • <strong>Menos de 68:</strong> Marginal / Existen fricciones críticas de uso.<br>
+                        • <strong>68 a 80:</strong> Aceptable / Bueno.<br>
+                        • <strong>80 a 100:</strong> Excelente / Alta satisfacción en la experiencia de usuario.</p>
                     </div>
-                </div>
 
-                <div class="alert alert-warning border-0 rounded-4 d-flex align-items-center mb-0 px-4 py-3">
-                    <i class="bi bi-info-circle-fill fs-3 me-3 text-warning"></i>
-                    <div style="font-size: 0.85rem;">
-                        <strong>Nota Técnica:</strong> Actualmente el tablero muestra datos simulados de demostración. Para conectar los datos reales de tu Google Sheets, revisa los comentarios en el código fuente de esta sección.
+                    <!-- BARRA DE AVANCE DE ENCUESTA -->
+                    <div class="dash-card mb-4" style="padding: 20px 25px;">
+                        <div class="d-flex justify-content-between align-items-end mb-2">
+                            <h6 class="text-muted fw-bold mb-0">Avance de Recolección (Meta Tesis: 30 Muestras)</h6>
+                            <span class="fw-bold text-primary" style="font-size: 1.1rem;" id="dash-avance-txt">0 / 30 Encuestas</span>
+                        </div>
+                        <div class="progress mt-2" style="height: 20px; border-radius: 10px; background: rgba(67, 24, 255, 0.1);">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" id="dash-avance-bar" role="progressbar" style="width: 0%; background: linear-gradient(135deg, var(--primary) 0%, #7551ff 100%);">0%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="dash-card text-center" style="border-bottom: 4px solid #cbd5e1;">
+                                <h6 class="text-muted fw-bold">Evaluaciones Totales</h6>
+                                <h1 class="fw-bold text-dark mb-0" id="dash-total" style="font-size: 3rem;">0</h1>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="dash-card text-center" style="border-bottom: 4px solid var(--primary);">
+                                <h6 class="text-muted fw-bold">SUS Gestores (Dash)</h6>
+                                <h2 class="fw-bold text-primary mb-0" id="dash-sus-gestor">0.0</h2>
+                                <span class="badge mt-2 mx-auto" id="badge-gestor">Sin Datos</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="dash-card text-center" style="border-bottom: 4px solid var(--success);">
+                                <h6 class="text-muted fw-bold">SUS Estudiantes (IA)</h6>
+                                <h2 class="fw-bold text-success mb-0" id="dash-sus-est">0.0</h2>
+                                <span class="badge mt-2 mx-auto" id="badge-estudiante">Sin Datos</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-5">
+                            <div class="dash-card h-100">
+                                <h6 class="fw-bold mb-3 text-secondary text-center">Comparativo SUS Global</h6>
+                                <div style="height: 300px; width: 100%;">
+                                    <canvas id="susChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="dash-card h-100">
+                                <h6 class="fw-bold mb-2 text-secondary text-center">Usabilidad por Atributo (0-100%)</h6>
+                                <p class="text-center small text-muted mb-3">Identifica cuáles aspectos del sistema tuvieron mayor nivel de aceptación y cuáles requieren mejoras en usabilidad.</p>
+                                <div style="height: 280px; width: 100%;">
+                                    <canvas id="preguntasChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -395,7 +381,19 @@
             "Necesitaba aprender muchas cosas antes de poder empezar a usar el sistema."
         ];
 
+        // Títulos cortos para la gráfica de barras de atributos
+        const etiquetasPreguntas = [
+            "Frecuencia de Uso", "Complejidad (-)", "Facilidad de Uso", "Necesidad de Soporte Técnico (-)",
+            "Integración de Funciones", "Inconsistencias (-)", "Curva de Aprendizaje Rápida", 
+            "Engorroso/Difícil (-)", "Nivel de Confianza", "Conocimiento Previo Requerido (-)"
+        ];
+
         let perfilActual = '';
+        let chartComparativo = null;
+        let chartPreguntas = null;
+
+        // URL PÚBLICA DE TUS RESPUESTAS EN GOOGLE SHEETS
+        const SHEET_ID = '1Q3I5BO2mOr74cl4-E1qLTAZdTD_G5iSYKmciiVfrEnc';
 
         function seleccionarPerfil(perfil) {
             perfilActual = perfil;
@@ -422,7 +420,6 @@
                 const num = index + 1;
                 const textoPregunta = preguntaObj.replace("este sistema", `<strong style="color: var(--primary);">${nombreSistema}</strong>`);
 
-                // Estructura HTML actualizada: Sub-bloque redondeado (.likert-block), línea absoluta y círculos CSS personalizados
                 let html = `
                 <div class="question-card">
                     <p class="fw-bold mb-0" style="font-size: 1.05rem; color: var(--text-main);">
@@ -478,59 +475,182 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function mostrarDashboard() {
+        /* ============================================================== */
+        /* LÓGICA DE EXTRACCIÓN DE DATOS DE GOOGLE SHEETS (SIN BACKEND)   */
+        /* ============================================================== */
+        async function fetchSheetData(sheetName) {
+            try {
+                // Usamos la API pública de visualización de Google Sheets que responde en JSON
+                const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
+                const response = await fetch(url);
+                const text = await response.text();
+                // Limpiamos la firma extraña que devuelve Google para dejar solo el JSON válido
+                const jsonString = text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\);/)[1];
+                const data = JSON.parse(jsonString);
+                return data.table.rows;
+            } catch (e) {
+                console.warn(`No se pudo cargar la hoja ${sheetName}. Probablemente aún no tiene respuestas.`);
+                return [];
+            }
+        }
+
+        function obtenerColorBadge(score) {
+            if(score >= 80) return { bg: 'bg-success', text: 'Excelente (A)' };
+            if(score >= 68) return { bg: 'bg-primary', text: 'Aceptable (B)' };
+            if(score > 0) return { bg: 'bg-danger', text: 'Marginal (C/D)' };
+            return { bg: 'bg-secondary', text: 'Sin Datos' };
+        }
+
+        async function mostrarDashboard() {
             document.getElementById('main-header').style.display = 'none';
             document.getElementById('success-section').style.display = 'none';
             document.getElementById('dashboard-section').style.display = 'block';
+            document.getElementById('loading-dash').style.display = 'block';
+            document.getElementById('dash-content-wrapper').style.display = 'none';
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            renderizarGrafico();
+            try {
+                const [filasGestor, filasEstudiante] = await Promise.all([
+                    fetchSheetData('Respuestas_Gestor'),
+                    fetchSheetData('Respuestas_Estudiante')
+                ]);
+
+                // Procesamiento de Métricas Básicas
+                const numGestores = filasGestor.length;
+                const numEstudiantes = filasEstudiante.length;
+                const totalEncuestas = numGestores + numEstudiantes;
+
+                // Extraer el PUNTAJE_SUS que está en la columna L (índice 11) según nuestro Backend
+                let sumGestor = 0;
+                filasGestor.forEach(r => sumGestor += (r.c[11] && r.c[11].v ? Number(r.c[11].v) : 0));
+                const promGestor = numGestores > 0 ? (sumGestor / numGestores).toFixed(1) : 0;
+
+                let sumEstud = 0;
+                filasEstudiante.forEach(r => sumEstud += (r.c[11] && r.c[11].v ? Number(r.c[11].v) : 0));
+                const promEstud = numEstudiantes > 0 ? (sumEstud / numEstudiantes).toFixed(1) : 0;
+
+                // Actualizar Textos
+                document.getElementById('dash-total').innerText = totalEncuestas;
+                document.getElementById('dash-sus-gestor').innerText = promGestor;
+                document.getElementById('dash-sus-est').innerText = promEstud;
+                
+                // Actualizar Meta de Tesis
+                let pctMeta = Math.min(Math.round((totalEncuestas / 30) * 100), 100);
+                document.getElementById('dash-avance-txt').innerText = `${totalEncuestas} / 30 Encuestas`;
+                document.getElementById('dash-avance-bar').style.width = `${pctMeta}%`;
+                document.getElementById('dash-avance-bar').innerText = `${pctMeta}%`;
+
+                // Actualizar Badges Evaluativos
+                let badgeGestor = obtenerColorBadge(promGestor);
+                document.getElementById('badge-gestor').className = `badge ${badgeGestor.bg} bg-opacity-10 text-${badgeGestor.bg.replace('bg-','')} mt-2 mx-auto`;
+                document.getElementById('badge-gestor').innerText = badgeGestor.text;
+
+                let badgeEstud = obtenerColorBadge(promEstud);
+                document.getElementById('badge-estudiante').className = `badge ${badgeEstud.bg} bg-opacity-10 text-${badgeEstud.bg.replace('bg-','')} mt-2 mx-auto`;
+                document.getElementById('badge-estudiante').innerText = badgeEstud.text;
+
+                // ==========================================================
+                // LÓGICA DE PROCESAMIENTO POR PREGUNTA (USABILIDAD 0-100%)
+                // ==========================================================
+                // Para el SUS, un 1 a veces es bueno y otras malo. Lo convertiremos todo a "Nivel de Usabilidad Positiva"
+                let puntajesPreguntas = new Array(10).fill(0);
+                let todasLasFilas = filasGestor.concat(filasEstudiante);
+
+                if(totalEncuestas > 0) {
+                    todasLasFilas.forEach(row => {
+                        for(let i = 0; i < 10; i++) {
+                            // Las preguntas Q1 a Q10 están en las columnas índice 1 a 10
+                            let valObj = row.c[i + 1];
+                            let valor = valObj && valObj.v ? Number(valObj.v) : 0;
+                            
+                            if (valor > 0) {
+                                let aporteUsabilidad = 0;
+                                // Si es pregunta Impar (1, 3, 5, 7, 9), 5 es excelente.
+                                if ((i + 1) % 2 !== 0) {
+                                    aporteUsabilidad = ((valor - 1) / 4) * 100;
+                                } 
+                                // Si es pregunta Par (2, 4, 6, 8, 10), 1 es excelente.
+                                else {
+                                    aporteUsabilidad = ((5 - valor) / 4) * 100;
+                                }
+                                puntajesPreguntas[i] += aporteUsabilidad;
+                            }
+                        }
+                    });
+                    
+                    // Promediar
+                    puntajesPreguntas = puntajesPreguntas.map(sum => (sum / totalEncuestas).toFixed(1));
+                }
+
+                // Ocultar Loader y Mostrar Contenido
+                document.getElementById('loading-dash').style.display = 'none';
+                document.getElementById('dash-content-wrapper').style.display = 'block';
+
+                // Dibujar Gráficas
+                renderizarGraficosReales(promGestor, promEstud, puntajesPreguntas);
+
+            } catch (error) {
+                console.error("Error cargando los datos del dashboard", error);
+                document.getElementById('loading-dash').innerHTML = `<div class="alert alert-danger mx-auto" style="max-width:400px;"><i class="bi bi-x-circle-fill me-2"></i> Error al conectar con Google Sheets. Asegúrate de que el documento es público.</div>`;
+            }
         }
 
-        function renderizarGrafico() {
-            /* NOTA PARA DANIEL: 
-               Para volver estos datos reales en tu proyecto de tesis, puedes publicar tu Google Sheets 
-               como archivo CSV ("Archivo > Compartir > Publicar en la web") y usar un simple 'fetch(URL_CSV)' 
-               aquí dentro para leer las filas y actualizar estos números de forma dinámica.
-            */
-            const ctx = document.getElementById('susChart').getContext('2d');
-            new Chart(ctx, {
+        function renderizarGraficosReales(promGestor, promEstud, puntajesPreguntas) {
+            // Destruir gráficos anteriores si el usuario presionó "Refrescar"
+            if(chartComparativo) chartComparativo.destroy();
+            if(chartPreguntas) chartPreguntas.destroy();
+
+            // Gráfico 1: Comparativo SUS Global
+            const ctxGlobal = document.getElementById('susChart').getContext('2d');
+            chartComparativo = new Chart(ctxGlobal, {
                 type: 'bar',
                 data: {
-                    labels: ['Gestores (Dashboard)', 'Estudiantes (Tutor IA)'],
+                    labels: ['Gestores', 'Estudiantes'],
                     datasets: [{
-                        label: 'Puntaje Promedio SUS',
-                        data: [78.5, 82.0], // Datos simulados
-                        backgroundColor: [
-                            'rgba(67, 24, 255, 0.8)', // Primary
-                            'rgba(5, 205, 153, 0.8)'  // Success
-                        ],
+                        data: [promGestor, promEstud],
+                        backgroundColor: ['rgba(67, 24, 255, 0.8)', 'rgba(5, 205, 153, 0.8)'],
                         borderRadius: 8,
-                        barThickness: 50
+                        barThickness: 60
                     }]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { 
                         legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) { return context.raw + ' Puntos'; }
-                            }
-                        }
+                        tooltip: { callbacks: { label: (ctx) => `${ctx.raw} Puntos SUS` } }
                     },
                     scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            title: { display: true, text: 'Escala 0 - 100', font: {family: 'Inter', size: 12} },
-                            grid: { color: 'rgba(0,0,0,0.05)' }
-                        },
-                        x: {
-                            grid: { display: false },
-                            ticks: { font: {family: 'Inter', weight: 'bold'} }
-                        }
+                        y: { beginAtZero: true, max: 100, title: { display: true, text: 'Puntaje SUS', font: {family: 'Inter', size: 12} }, grid: { color: 'rgba(0,0,0,0.05)' } },
+                        x: { grid: { display: false }, ticks: { font: {family: 'Inter', weight: 'bold'} } }
+                    }
+                }
+            });
+
+            // Gráfico 2: Desempeño por Atributo de Usabilidad
+            const ctxPreguntas = document.getElementById('preguntasChart').getContext('2d');
+            chartPreguntas = new Chart(ctxPreguntas, {
+                type: 'bar',
+                data: {
+                    labels: etiquetasPreguntas,
+                    datasets: [{
+                        label: 'Nivel de Usabilidad',
+                        data: puntajesPreguntas,
+                        backgroundColor: 'rgba(67, 24, 255, 0.2)',
+                        borderColor: 'rgba(67, 24, 255, 0.8)',
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    indexAxis: 'y', // Lo hacemos horizontal para que se lean bien los textos
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: { callbacks: { label: (ctx) => `Usabilidad: ${ctx.raw}%` } }
+                    },
+                    scales: {
+                        x: { beginAtZero: true, max: 100, title: { display: true, text: 'Porcentaje Positivo (%)', font: {family: 'Inter', size: 12} } },
+                        y: { grid: { display: false }, ticks: { font: {family: 'Inter', size: 11} } }
                     }
                 }
             });
